@@ -5,18 +5,31 @@ function urlCheck(content) {
 async function linkUpdate(value) {
     let result = document.getElementById("result")
 
-    let tags = [
-        "link",
-        "img"
-    ]
+    let links = result.querySelectorAll("link")
+    for (let i = 0; i < links.length; i++) if (!urlCheck(links[i].href)) {
+        let pathname = (new URL(links[i].href)).pathname
+        let origin = (new URL(value)).origin
+        
+        let response = await fetch(
+            `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`,
+            {
+                method:"GET",
+                headers:{}
+            }
+        )
 
-    for (let i = 0; i < tags.length; i++) {
-        let links = result.querySelectorAll(tags[i].toString())
-        for (let i = 0; i < links.length; i++) if (!urlCheck(links[i].href)) {
-            let pathname = (new URL(links[i].href)).pathname
-            let origin = (new URL(value)).origin
-            links[i].href = `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`
-        }
+        links[i].remove()
+
+        let style = document.createElement("style")
+        style.innerHTML = await response.text()
+        result.querySelector("meta").appendChild(style)
+    }
+
+    let imgs = result.querySelectorAll("img")
+    for (let i = 0; i < imgs.length; i++) if (!urlCheck(imgs[i].src)) {
+        let pathname = (new URL(imgs[i].src)).pathname
+        let origin = (new URL(value)).origin
+        imgs[i].src = `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`
     }
 }
 async function scriptUpdate(value) {
@@ -41,8 +54,11 @@ async function scriptUpdate(value) {
             }
         )
 
-        let text = await response.text()
-        eval(text)
+        try {
+            eval(await response.text())
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 async function search() {
