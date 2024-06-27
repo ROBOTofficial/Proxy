@@ -7,9 +7,7 @@ async function linkUpdate(value) {
     let origin = (new URL(value)).origin
 
     let links = result.querySelectorAll("link")
-    for (let i = 0; i < links.length; i++) {
-        console.log((new URL(links[i].href)).origin === "https://robotofficial.github.io")
-        if (
+    for (let i = 0; i < links.length; i++) if (
         !urlCheck(links[i].href) ||
         (new URL(links[i].href)).origin === "https://robotofficial.github.io"
     ) {
@@ -28,7 +26,7 @@ async function linkUpdate(value) {
         let style = document.createElement("style")
         style.innerHTML = await response.text()
         result.querySelector("meta").appendChild(style)
-    }}
+    }
 
     let imgs = result.querySelectorAll("img")
     for (let i = 0; i < imgs.length; i++) if (
@@ -49,7 +47,7 @@ async function scriptUpdate(value) {
 
         if (
             !urlCheck(scripts[i].src) ||
-            (new URL(links[i].href)).origin === "https://robotofficial.github.io"
+            (new URL(scripts[i].href)).origin === "https://robotofficial.github.io"
         ) {
             try {
                 let pathname = (new URL(scripts[i].src)).pathname
