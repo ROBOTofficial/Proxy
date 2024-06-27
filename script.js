@@ -9,7 +9,7 @@ async function linkUpdate(value) {
     let links = result.querySelectorAll("link")
     for (let i = 0; i < links.length; i++) if (
         !urlCheck(links[i].href) ||
-        origin === "https://robotofficial.github.io"
+        (new URL(links[i].href)).origin === "https://robotofficial.github.io"
     ) {
         let pathname = (new URL(links[i].href)).pathname
         
@@ -31,7 +31,7 @@ async function linkUpdate(value) {
     let imgs = result.querySelectorAll("img")
     for (let i = 0; i < imgs.length; i++) if (
         !urlCheck(imgs[i].src) ||
-        origin === "https://robotofficial.github.io"
+        (new URL(links[i].href)).origin === "https://robotofficial.github.io"
     ) {
         let pathname = (new URL(imgs[i].src)).pathname
         imgs[i].src = `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`
@@ -47,7 +47,7 @@ async function scriptUpdate(value) {
 
         if (
             !urlCheck(scripts[i].src) ||
-        origin === "https://robotofficial.github.io"
+            (new URL(links[i].href)).origin === "https://robotofficial.github.io"
         ) {
             try {
                 let pathname = (new URL(scripts[i].src)).pathname
