@@ -40,10 +40,12 @@ async function scriptUpdate(value) {
         let src = scripts[i].src
 
         if (!urlCheck(scripts[i].src)) {
-            let pathname = (new URL(scripts[i].src)).pathname
-            let origin = (new URL(value)).origin
-            src = `${origin}${pathname}`
-            scripts[i].src = `${origin}${pathname}`
+            try {
+                let pathname = (new URL(scripts[i].src)).pathname
+                let origin = (new URL(value)).origin
+                src = `${origin}${pathname}`
+                scripts[i].src = `${origin}${pathname}`
+            } catch {}
         }
 
         let response = await fetch(
@@ -55,7 +57,10 @@ async function scriptUpdate(value) {
         )
 
         try {
-            eval(await response.text())
+            console.log(`https://corsproxy.io/?${encodeURIComponent(src)}`)
+            let text = await response.text()
+            console.log(text)
+            eval(text)
         } catch (error) {
             console.log(error)
         }
