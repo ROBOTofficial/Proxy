@@ -47,7 +47,7 @@ async function scriptUpdate(value) {
 
         if (
             !urlCheck(scripts[i].src) ||
-            (new URL(scripts[i].href)).origin === "https://robotofficial.github.io"
+            (new URL(scripts[i].src)).origin === "https://robotofficial.github.io"
         ) {
             try {
                 let pathname = (new URL(scripts[i].src)).pathname
