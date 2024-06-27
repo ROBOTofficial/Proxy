@@ -4,11 +4,14 @@ function urlCheck(content) {
 }
 async function linkUpdate(value) {
     let result = document.getElementById("result")
+    let origin = (new URL(value)).origin
 
     let links = result.querySelectorAll("link")
-    for (let i = 0; i < links.length; i++) if (!urlCheck(links[i].href)) {
+    for (let i = 0; i < links.length; i++) if (
+        !urlCheck(links[i].href) ||
+        origin === "https://robotofficial.github.io"
+    ) {
         let pathname = (new URL(links[i].href)).pathname
-        let origin = (new URL(value)).origin
         
         let response = await fetch(
             `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`,
@@ -26,23 +29,28 @@ async function linkUpdate(value) {
     }
 
     let imgs = result.querySelectorAll("img")
-    for (let i = 0; i < imgs.length; i++) if (!urlCheck(imgs[i].src)) {
+    for (let i = 0; i < imgs.length; i++) if (
+        !urlCheck(imgs[i].src) ||
+        origin === "https://robotofficial.github.io"
+    ) {
         let pathname = (new URL(imgs[i].src)).pathname
-        let origin = (new URL(value)).origin
         imgs[i].src = `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`
     }
 }
 async function scriptUpdate(value) {
     let result = document.getElementById("result")
+    let origin = (new URL(value)).origin
 
     let scripts = result.querySelectorAll("script")
     for (let i = 0; i < scripts.length; i++) {
         let src = scripts[i].src
 
-        if (!urlCheck(scripts[i].src)) {
+        if (
+            !urlCheck(scripts[i].src) ||
+        origin === "https://robotofficial.github.io"
+        ) {
             try {
                 let pathname = (new URL(scripts[i].src)).pathname
-                let origin = (new URL(value)).origin
                 src = `${origin}${pathname}`
                 scripts[i].src = `${origin}${pathname}`
             } catch {}
