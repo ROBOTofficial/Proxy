@@ -2,6 +2,7 @@ function urlCheck(content) {
     let regex = /^https?:\/\/[\w/:%#\$&\?\(\)~\.=\+\-]+$/
     return regex.test(content)
 }
+const endpoint = 'https://corsproxy.io/?url='
 async function linkUpdate(value) {
     let result = document.getElementById("result")
     let origin = (new URL(value)).origin
@@ -14,7 +15,7 @@ async function linkUpdate(value) {
         let pathname = (new URL(links[i].href)).pathname
         
         let response = await fetch(
-            `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`,
+            `${endpoint}${encodeURIComponent(origin + pathname)}`,
             {
                 method:"GET",
                 headers:{}
@@ -34,7 +35,7 @@ async function linkUpdate(value) {
         (new URL(links[i].href)).origin === "https://robotofficial.github.io"
     ) {
         let pathname = (new URL(imgs[i].src)).pathname
-        imgs[i].src = `https://corsproxy.io/?${encodeURIComponent(origin + pathname)}`
+        imgs[i].src = `${endpoint}${encodeURIComponent(origin + pathname)}`
     }
 }
 async function scriptUpdate(value) {
@@ -65,7 +66,7 @@ async function scriptUpdate(value) {
         }
 
         let response = await fetch(
-            `https://corsproxy.io/?${encodeURIComponent(src)}`,
+            `${endpoint}${encodeURIComponent(src)}`,
             {
                 method:"GET",
                 headers:{}
@@ -73,7 +74,7 @@ async function scriptUpdate(value) {
         )
 
         try {
-            console.log(`https://corsproxy.io/?${encodeURIComponent(src)}`)
+            console.log(`${endpoint}${encodeURIComponent(src)}`)
             let text = await response.text()
             console.log(text)
             eval(text)
@@ -89,7 +90,7 @@ async function search() {
 
     try {
         let response = await fetch(
-            `https://corsproxy.io/?${encodeURIComponent(value)}`,
+            `${endpoint}${encodeURIComponent(value)}`,
             {
                 method:"GET",
                 headers:{}
